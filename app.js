@@ -10,6 +10,9 @@ let transport;
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+// user is authenticated by a get request to this route and accessToken is generated.
+// transport is generated using accessToken
+
 app.get("/auth", async function(req,res){
   const CLIENT_ID = process.env.CLIENT_ID;
   const CLIENT_SECRET = process.env.CLIENT_SECRET;
@@ -32,9 +35,14 @@ app.get("/auth", async function(req,res){
   });
   res.send("Sucessfuly Authorized");
 });
+// send a post req to http://localhost:3000/send with body
+// recieverEmail-> key = recieverEmail
+// subject-> key = subject
+// text-> key = text
 app.post("/send",async function(req,res){
   try {
     console.log(process.env.CLIENT_ID);
+    // Create mail body
     const mailOptions = {
       from: "sidhantkaul10@gmail.com",
       to: req.body.recieverEmail,
@@ -45,9 +53,9 @@ app.post("/send",async function(req,res){
     res.send(result);
   } catch (e) {
     console.log(e);
-    if(!oAuthClient)
-    res.send("Not authorized")
-    res.send("Some Problem Occured at the time of sending mail")
+    if(!oAuthClient)//if unauthorized user tries to send mail
+    res.send("Not authorized");
+    res.send("Some Problem Occured at the time of sending mail");//if failed to send mail
   }
 });
 app.listen(3000, function(){
