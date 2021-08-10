@@ -54,7 +54,7 @@ app.post("/send",async function(req,res){
   } catch (e) {
     console.log(e);
     if(!oAuthClient)//if unauthorized user tries to send mail
-    res.send("Not authorized");
+    res.send("Not authorized \n get yourself authorized first on /auth route by a get request");
     res.send("Some Problem Occured at the time of sending mail");//if failed to send mail
   }
 });
